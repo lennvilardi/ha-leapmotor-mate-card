@@ -62,7 +62,7 @@ console.info(
   name: 'Leapmotor Mate Card',
   description: 'Leapmotor vehicle card for Leapmotor Mate (MQTT), mirroring the official app layout',
   preview: true,
-  documentationURL: 'https://github.com/GITHUB_USER/ha-leapmotor-mate-card',
+  documentationURL: 'https://github.com/lennvilardi/ha-leapmotor-mate-card',
 })
 
 /**

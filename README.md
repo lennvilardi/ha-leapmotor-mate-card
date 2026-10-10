@@ -14,7 +14,7 @@ and a grid of groups — charging, status, climate, tires, trip and location.
 
 ## Install (HACS)
 
-1. HACS → ⋮ → **Custom repositories** → `https://github.com/GITHUB_USER/ha-leapmotor-mate-card`, type **Dashboard**.
+1. HACS → ⋮ → **Custom repositories** → `https://github.com/lennvilardi/ha-leapmotor-mate-card`, type **Dashboard**.
 2. Install **Leapmotor Mate Card**, then reload the browser.
 
 ## Leapmotor Mate example
