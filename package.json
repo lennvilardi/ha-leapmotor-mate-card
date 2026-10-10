@@ -1,6 +1,6 @@
 {
   "name": "leapmotor-card",
-  "version": "0.4.12",
+  "version": "0.4.12-mate.1",
   "description": "Lovelace card for Leapmotor vehicles in Home Assistant",
   "license": "GPL-3.0-or-later",
   "repository": { "type": "git", "url": "git+https://github.com/fapgomes/ha-leapmotor-card.git" },

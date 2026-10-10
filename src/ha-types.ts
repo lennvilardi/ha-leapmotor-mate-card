@@ -32,6 +32,8 @@ export interface HomeAssistant {
   language?: string
   callService: (domain: string, service: string, data?: Record<string, unknown>, target?: Record<string, unknown>) => Promise<unknown>
   callWS: <T>(msg: Record<string, unknown>) => Promise<T>
+  /** Registered services by domain. Used to report a missing `leapmotor.*` service in standalone mode. */
+  services?: Record<string, Record<string, unknown>>
 }
 
 /** Entry of `config/entity_registry/list`, used only in the resolver's fallback. */

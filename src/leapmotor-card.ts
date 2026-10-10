@@ -403,6 +403,13 @@ export class LeapmotorCard extends LitElement {
   }
 
   private async doCall(call: ServiceCall, extra?: Record<string, unknown>) {
+    // Standalone mode (Leapmotor Mate): the `leapmotor.*` services (climate
+    // settings, sunshade) do not exist. Say so instead of a raw service error.
+    if (!this._hass!.services?.[call.domain]?.[call.service]) {
+      const config = this._config
+      const language = pickLanguage(config?.language, this._hass!.locale?.language ?? this._hass!.language)
+      throw new Error(createTranslator(language)('error.service_unavailable'))
+    }
     const data = { ...call.data, ...extra }
     if (call.entityIdAsField) {
       // The `leapmotor.*` services receive the vehicle as a field, not as a

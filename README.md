@@ -374,7 +374,7 @@ entities:
   rangeLive: sensor.my_car_live_remaining_range_km
 ```
 
-The catalog below lists all 89 logical names the card knows about, the
+The catalog below lists all 93 logical names the card knows about, the
 Home Assistant domain each one expects, and the `translation_key` it is
 matched against. Every key is valid as an override target under
 `entities:`.
@@ -522,6 +522,24 @@ matched against. Every key is valid as an override target under
 | `scheduleRecurrence` | sensor | `charging_planned_circulation` |
 | `scheduleWeekly` | binary_sensor | `charging_planned_weekly` |
 | `scheduleCancelledOnce` | binary_sensor | `charging_schedule_cancelled_once` |
+
+#### Leapmotor Mate (MQTT)
+
+Fork addition. Leapmotor Mate publishes the car over MQTT discovery, so its
+entities are not on the `leapmotor` platform: when no `leapmotor` entity
+exists and `entities:` is set, the card runs in standalone mode on the
+overrides alone. Mate exposes lock and climate as buttons; these names point
+the card at them. A `binary_sensor` with `device_class: lock` is accepted
+for `lock` (HA convention: `on` = unlocked). The `leapmotor.*` services
+(climate settings, sunshade) do not exist in this mode and are reported as
+unavailable.
+
+| Logical name | Domain | `translation_key` |
+| --- | --- | --- |
+| `lockButton` | button | `mate_lock` |
+| `unlockButton` | button | `mate_unlock` |
+| `climateOnButton` | button | `mate_climate_on` |
+| `climateOffButton` | button | `mate_climate_off` |
 
 ## Development
 

@@ -155,5 +155,6 @@
   "editor.tire_range": "Tire pressure range (bar)",
   "detail.close": "Close",
   "detail.previous": "Previous",
-  "detail.next": "Next"
+  "detail.next": "Next",
+  "error.service_unavailable": "This action is not available with these entities (service missing)."
 }

@@ -36,6 +36,18 @@ export function resolveEntities(
   extra?: HassEntityDisplayEntry[],
 ): ResolveResult {
   const fromHass = Object.values(hass.entities ?? {}).filter(e => e.platform === INTEGRATION_DOMAIN)
+
+  // Standalone mode (Leapmotor Mate over MQTT): no entity on the `leapmotor`
+  // platform, but the user listed the entities by hand. Build the map from the
+  // overrides alone instead of stopping on 'not_found' before reading them.
+  const overrides = Object.entries(config.entities ?? {}).filter(([, id]) => !!id) as [LogicalKey, string][]
+  if (fromHass.length === 0 && overrides.length > 0) {
+    const map: EntityMap = {}
+    for (const [key, entityId] of overrides) map[key] = entityId
+    const missing = (Object.keys(ENTITY_KEYS) as LogicalKey[]).filter(k => !map[k])
+    return { deviceName: config.name, map, missing, candidates: [], needsFallback: false }
+  }
+
   const entries = fromHass.length > 0 ? fromHass : (extra ?? [])
   const needsFallback = fromHass.length === 0 && !extra
 

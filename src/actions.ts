@@ -374,7 +374,10 @@ export function resolveAction(
     case 'unlock':
     case 'lock': {
       const entityId = map.lock
-      return entityId ? { domain: 'lock', service: action, entityId } : undefined
+      if (entityId && entityId.startsWith('lock.')) return { domain: 'lock', service: action, entityId }
+      // Leapmotor Mate: the lock state is a binary_sensor and the commands are
+      // two buttons, so `lock.lock` / `lock.unlock` have no target.
+      return press(map, action === 'lock' ? 'lockButton' : 'unlockButton')
     }
     case 'trunk':
       return press(map, state.openings.trunk === true ? 'closeTrunk' : 'openTrunk')
@@ -422,7 +425,12 @@ export function resolveAction(
     case 'findVehicle': return press(map, 'findVehicle')
     case 'unlockCharger': return press(map, 'unlockCharger')
     case 'refresh': return press(map, 'refreshData')
-    case 'climate': return toggleSwitch(map, 'climateSwitch', state.climate.on)
+    case 'climate': {
+      if (map.climateSwitch?.startsWith('switch.')) return toggleSwitch(map, 'climateSwitch', state.climate.on)
+      // Leapmotor Mate: start/stop are two buttons. Same rule as toggleSwitch:
+      // only a confirmed `true` turns it off, an unknown state turns it on.
+      return press(map, state.climate.on === true ? 'climateOffButton' : 'climateOnButton')
+    }
     case 'steeringWheelHeat': return toggleSwitch(map, 'steeringWheelHeat', state.comfort.steeringWheelHeat)
     case 'mirrorHeat': return toggleSwitch(map, 'mirrorHeat', state.comfort.mirrorHeat)
     case 'batteryPreheat': return toggleSwitch(map, 'batteryPreheat', state.comfort.batteryPreheat)

@@ -127,6 +127,14 @@ export const ENTITY_KEYS = {
   scheduleRecurrence: { domain: 'sensor', tk: 'charging_planned_circulation' },
   scheduleWeekly: { domain: 'binary_sensor', tk: 'charging_planned_weekly' },
   scheduleCancelledOnce: { domain: 'binary_sensor', tk: 'charging_schedule_cancelled_once' },
+
+  // Leapmotor Mate (MQTT): commands exposed as buttons instead of lock/switch
+  // entities. Never matched by translation key (the Mate entities are not on
+  // the `leapmotor` platform); only reachable through the `entities` override.
+  lockButton: { domain: 'button', tk: 'mate_lock' },
+  unlockButton: { domain: 'button', tk: 'mate_unlock' },
+  climateOnButton: { domain: 'button', tk: 'mate_climate_on' },
+  climateOffButton: { domain: 'button', tk: 'mate_climate_off' },
 } as const
 
 export type LogicalKey = keyof typeof ENTITY_KEYS

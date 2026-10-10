@@ -656,7 +656,12 @@ export function buildVehicleState(hass: HomeAssistant, map: EntityMap, now: Date
       }
     : undefined
 
-  const locked = bool(hass, map, 'lock')
+  // A binary_sensor with device_class `lock` (Leapmotor Mate) follows the HA
+  // convention: `on` means UNLOCKED. Invert it so `locked` keeps its meaning.
+  const lockEntity = entity(hass, map, 'lock')
+  const lockRaw = bool(hass, map, 'lock')
+  const lockInverted = map.lock?.startsWith('binary_sensor.') === true && lockEntity?.attributes.device_class === 'lock'
+  const locked = lockInverted && lockRaw !== undefined ? !lockRaw : lockRaw
   const ageSeconds = num(hass, map, 'lockStateAge')
   const source = str(hass, map, 'lockStateSource')
   const stale = (source?.includes('stale') ?? false) || (ageSeconds !== undefined && ageSeconds > STALE_AFTER_SECONDS)

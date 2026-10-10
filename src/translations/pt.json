@@ -155,5 +155,6 @@
   "editor.tire_range": "Faixa de pressão dos pneus (bar)",
   "detail.close": "Fechar",
   "detail.previous": "Anterior",
-  "detail.next": "Seguinte"
+  "detail.next": "Seguinte",
+  "error.service_unavailable": "Esta ação não está disponível com estas entidades (serviço em falta)."
 }
