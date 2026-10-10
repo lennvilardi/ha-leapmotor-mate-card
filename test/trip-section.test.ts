@@ -75,7 +75,7 @@ function render(
     return spec
   })
   const hass = fakeHass(specs)
-  const state = buildVehicleState(hass, resolveEntities(hass, { type: 'custom:leapmotor-card' }).map, REAL_NOW)
+  const state = buildVehicleState(hass, resolveEntities(hass, { type: 'custom:leapmotor-mate-card' }).map, REAL_NOW)
   mutate(state)
 
   const panel = new LeapmotorTrip()
@@ -97,7 +97,7 @@ function renderWith(attributes: Record<string, unknown>, language: string): stri
       : spec)
   const hass = fakeHass(specs)
   const panel = new LeapmotorTrip()
-  panel.state = buildVehicleState(hass, resolveEntities(hass, { type: 'custom:leapmotor-card' }).map, REAL_NOW)
+  panel.state = buildVehicleState(hass, resolveEntities(hass, { type: 'custom:leapmotor-mate-card' }).map, REAL_NOW)
   panel.t = createTranslator(language)
   panel.language = language
   return flatten(panel.render())

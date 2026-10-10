@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { loadRegistryFallback, resolveEntities } from '../src/resolver'
 import { displayEntry, fakeHass } from './helpers/fake-hass'
 
-const CONFIG = { type: 'custom:leapmotor-card' }
+const CONFIG = { type: 'custom:leapmotor-mate-card' }
 
 const BASE = [
   { key: 'sensor/battery_percent', entity_id: 'sensor.b10_battery', state: '60', unit: '%' },

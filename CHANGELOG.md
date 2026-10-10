@@ -5,6 +5,32 @@ Every notable change to this project is recorded here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project uses [Semantic Versioning](https://semver.org/).
 
+## [0.1.0] — 2026-10-10
+
+First release of **Leapmotor Mate Card**, a fork of
+[fapgomes/ha-leapmotor-card](https://github.com/fapgomes/ha-leapmotor-card) 0.4.12
+for cars published by [Leapmotor Mate](https://github.com/ProtossBlaster/leapmotor-mate)
+over MQTT discovery.
+
+### Added
+
+- **Standalone mode**: when no entity of the `leapmotor` integration exists and
+  `entities:` is set, the card builds its map from the overrides alone instead
+  of stopping on "not found".
+- **Lock by buttons**: `lockButton` / `unlockButton` are pressed when `lock` is
+  not a `lock.*` entity. A `binary_sensor` with `device_class: lock` is read
+  with the Home Assistant convention (`on` = unlocked).
+- **Climate by buttons**: `climateOnButton` / `climateOffButton` are pressed
+  when `climateSwitch` is not a `switch.*` entity.
+- Missing services (`leapmotor.set_climate`, sunshade) are reported as
+  unavailable instead of a raw service error.
+
+### Changed
+
+- Custom element renamed to `custom:leapmotor-mate-card` (and its editor), so
+  it can be installed next to the original card. The file is
+  `leapmotor-mate-card.js`.
+
 ## [0.4.12] — 2026-09-23
 
 ### Changed

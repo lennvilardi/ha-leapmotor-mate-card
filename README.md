@@ -1,10 +1,52 @@
-# Leapmotor Card
+# Leapmotor Mate Card
 
-A Lovelace custom card for Home Assistant that shows a Leapmotor vehicle as a
-compact card: range, battery and lock state at the top, a row of action
-buttons, and a grid of groups — charging, status, climate, tires, trip and
-location — each opening a navigable sub-view in place of the grid rather than
-below it.
+A Lovelace custom card for Home Assistant for Leapmotor vehicles published by
+[Leapmotor Mate](https://github.com/ProtossBlaster/leapmotor-mate) over MQTT
+discovery: range, battery and lock state at the top, a row of action buttons,
+and a grid of groups — charging, status, climate, tires, trip and location.
+
+> **Fork of [fapgomes/ha-leapmotor-card](https://github.com/fapgomes/ha-leapmotor-card)**
+> (GPL-3.0), which targets the
+> [kerniger/leapmotor-ha](https://github.com/kerniger/leapmotor-ha) integration.
+> All the layout and logic are the original author's work. This fork only adds a
+> standalone mode for Mate: entities listed by hand under `entities:`, lock and
+> climate driven by Mate's buttons. It still works with the kerniger integration.
+
+## Install (HACS)
+
+1. HACS → ⋮ → **Custom repositories** → `https://github.com/GITHUB_USER/ha-leapmotor-mate-card`, type **Dashboard**.
+2. Install **Leapmotor Mate Card**, then reload the browser.
+
+## Leapmotor Mate example
+
+Map each logical name to the entity Mate created (Settings → Devices → your
+car). Names not listed are simply not shown.
+
+```yaml
+type: custom:leapmotor-mate-card
+name: Leapmotor
+entities:
+  battery: sensor.<car>_soc
+  range: sensor.<car>_range
+  lock: binary_sensor.<car>_lock          # device_class lock: on = unlocked
+  lockButton: button.<car>_lock
+  unlockButton: button.<car>_unlock
+  climateOn: binary_sensor.<car>_climate
+  climateOnButton: button.<car>_climate_on
+  climateOffButton: button.<car>_climate_off
+  openTrunk: button.<car>_trunk
+  location: device_tracker.<car>
+```
+
+The full list of logical names is in the catalog below. The `leapmotor.*`
+services (climate settings, sunshade) have no Mate equivalent and are reported
+as unavailable.
+
+---
+
+*Original documentation follows.*
+
+## About the original card
 
 Built for a Leapmotor B10 running the
 [kerniger/leapmotor-ha](https://github.com/kerniger/leapmotor-ha) integration.
@@ -73,13 +115,13 @@ The same thing by hand, if you prefer:
 Minimal configuration:
 
 ```yaml
-type: custom:leapmotor-card
+type: custom:leapmotor-mate-card
 ```
 
 Full example with every option:
 
 ```yaml
-type: custom:leapmotor-card
+type: custom:leapmotor-mate-card
 device: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6
 name: My Leapmotor
 language: en

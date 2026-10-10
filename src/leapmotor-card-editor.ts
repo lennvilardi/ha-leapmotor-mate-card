@@ -53,7 +53,7 @@ function actionOptionLabel(t: (k: string) => string, a: ActionId): string {
   return t(ACTION_LABEL_KEY[a] ?? `action.${a}`)
 }
 
-@customElement('leapmotor-card-editor')
+@customElement('leapmotor-mate-card-editor')
 export class LeapmotorCardEditor extends LitElement {
   @internalState() private _config?: LeapmotorCardConfig
   @property({ attribute: false }) public hass?: HomeAssistant
@@ -134,7 +134,7 @@ export class LeapmotorCardEditor extends LitElement {
     // everything it was given, so it is here, in the editor, that the dead
     // key finally disappears.
     delete (raw as Record<string, unknown>)['sections']
-    const config = { type: 'custom:leapmotor-card', ...raw } as LeapmotorCardConfig
+    const config = { type: 'custom:leapmotor-mate-card', ...raw } as LeapmotorCardConfig
     this._config = config
     this.dispatchEvent(new CustomEvent('config-changed', { detail: { config }, bubbles: true, composed: true }))
   }
@@ -193,7 +193,7 @@ export class LeapmotorCardEditor extends LitElement {
       .filter(row => row.on)
       .map(row => this._longForm.get(row.id) ?? row.id)
 
-    const config = { ...this._config, type: 'custom:leapmotor-card', grid } as LeapmotorCardConfig
+    const config = { ...this._config, type: 'custom:leapmotor-mate-card', grid } as LeapmotorCardConfig
     this._config = config
     this.dispatchEvent(new CustomEvent('config-changed', { detail: { config }, bubbles: true, composed: true }))
   }
@@ -291,5 +291,5 @@ export class LeapmotorCardEditor extends LitElement {
 }
 
 declare global {
-  interface HTMLElementTagNameMap { 'leapmotor-card-editor': LeapmotorCardEditor }
+  interface HTMLElementTagNameMap { 'leapmotor-mate-card-editor': LeapmotorCardEditor }
 }

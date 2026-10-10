@@ -1,11 +1,11 @@
 {
-  "name": "leapmotor-card",
-  "version": "0.4.12-mate.1",
-  "description": "Lovelace card for Leapmotor vehicles in Home Assistant",
+  "name": "leapmotor-mate-card",
+  "version": "0.1.0",
+  "description": "Lovelace card for Leapmotor vehicles running Leapmotor Mate (MQTT), forked from fapgomes/ha-leapmotor-card",
   "license": "GPL-3.0-or-later",
-  "repository": { "type": "git", "url": "git+https://github.com/fapgomes/ha-leapmotor-card.git" },
+  "repository": { "type": "git", "url": "git+https://github.com/GITHUB_USER/ha-leapmotor-mate-card.git" },
   "type": "module",
-  "main": "dist/leapmotor-card.js",
+  "main": "dist/leapmotor-mate-card.js",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c --watch",

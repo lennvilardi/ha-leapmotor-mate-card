@@ -8,7 +8,7 @@ import { DEFAULT_TIRE_RANGE, type EntityMap, type GroupId, type LeapmotorCardCon
 import { buildVehicleState } from '../src/vehicle-state'
 import { REAL_NOW, realHass } from './fixtures/real-states'
 
-const CONFIG: LeapmotorCardConfig = { type: 'custom:leapmotor-card' }
+const CONFIG: LeapmotorCardConfig = { type: 'custom:leapmotor-mate-card' }
 const t = createTranslator('en')
 const RANGE = DEFAULT_TIRE_RANGE
 

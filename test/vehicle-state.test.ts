@@ -11,7 +11,7 @@ import {
   SEVEN_DAY_ATTRIBUTES_UNKNOWN_UNIT, realHass,
 } from './fixtures/real-states'
 
-const CONFIG = { type: 'custom:leapmotor-card' }
+const CONFIG = { type: 'custom:leapmotor-mate-card' }
 
 function build(overrides: Record<string, string> = {}, now = REAL_NOW) {
   const hass = realHass(overrides)

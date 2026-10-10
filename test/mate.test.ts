@@ -49,7 +49,7 @@ const HASS = mateHass({
 
 describe('Leapmotor Mate (standalone mode)', () => {
   it('builds the map from the overrides when no leapmotor entity exists', () => {
-    const r = resolveEntities(HASS, { type: 'custom:leapmotor-card', name: 'B10', entities: ENTITIES })
+    const r = resolveEntities(HASS, { type: 'custom:leapmotor-mate-card', name: 'B10', entities: ENTITIES })
     expect(r.error).toBeUndefined()
     expect(r.needsFallback).toBe(false)
     expect(r.deviceName).toBe('B10')
@@ -59,7 +59,7 @@ describe('Leapmotor Mate (standalone mode)', () => {
   })
 
   it('still reports not_found without overrides', () => {
-    const r = resolveEntities(HASS, { type: 'custom:leapmotor-card' })
+    const r = resolveEntities(HASS, { type: 'custom:leapmotor-mate-card' })
     expect(r.map).toEqual({})
   })
 

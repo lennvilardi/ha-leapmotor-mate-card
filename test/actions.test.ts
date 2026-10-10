@@ -33,7 +33,7 @@ const t = createTranslator('pt')
 
 function ctx(overrides: Record<string, string> = {}) {
   const hass = realHass(overrides)
-  const { map } = resolveEntities(hass, { type: 'custom:leapmotor-card' })
+  const { map } = resolveEntities(hass, { type: 'custom:leapmotor-mate-card' })
   return { map, state: buildVehicleState(hass, map, REAL_NOW) }
 }
 

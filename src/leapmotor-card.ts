@@ -38,7 +38,7 @@ import './sections/trip'
 import './sections/comfort'
 import './sections/schedule'
 
-export const CARD_VERSION = '0.4.12'
+export const CARD_VERSION = '0.1.0'
 
 /**
  * Wait time before sending the temperature. `leapmotor.set_climate` is not
@@ -58,11 +58,11 @@ console.info(
 
 ;(window as unknown as { customCards?: unknown[] }).customCards ||= []
 ;(window as unknown as { customCards: unknown[] }).customCards.push({
-  type: 'leapmotor-card',
-  name: 'Leapmotor Card',
-  description: 'Leapmotor vehicle card mirroring the official app layout',
+  type: 'leapmotor-mate-card',
+  name: 'Leapmotor Mate Card',
+  description: 'Leapmotor vehicle card for Leapmotor Mate (MQTT), mirroring the official app layout',
   preview: true,
-  documentationURL: 'https://github.com/fapgomes/ha-leapmotor-card',
+  documentationURL: 'https://github.com/GITHUB_USER/ha-leapmotor-mate-card',
 })
 
 /**
@@ -72,7 +72,7 @@ console.info(
  */
 const CORE_KEYS: LogicalKey[] = ['battery', 'lock']
 
-@customElement('leapmotor-card')
+@customElement('leapmotor-mate-card')
 export class LeapmotorCard extends LitElement {
   @internalState() private _hass?: HomeAssistant
   @internalState() private _config?: LeapmotorCardConfig
@@ -129,7 +129,7 @@ export class LeapmotorCard extends LitElement {
 
   public static async getConfigElement() {
     await import('./leapmotor-card-editor')
-    return document.createElement('leapmotor-card-editor')
+    return document.createElement('leapmotor-mate-card-editor')
   }
 
   public static getStubConfig(hass: HomeAssistant): LeapmotorCardConfig {
@@ -139,7 +139,7 @@ export class LeapmotorCard extends LitElement {
         .map(e => e.device_id)
         .filter((d): d is string => !!d),
     )]
-    return { type: 'custom:leapmotor-card', ...(devices.length === 1 ? { device: devices[0] } : {}) }
+    return { type: 'custom:leapmotor-mate-card', ...(devices.length === 1 ? { device: devices[0] } : {}) }
   }
 
   public setConfig(config: LeapmotorCardConfig): void {
@@ -778,5 +778,5 @@ export class LeapmotorCard extends LitElement {
 }
 
 declare global {
-  interface HTMLElementTagNameMap { 'leapmotor-card': LeapmotorCard }
+  interface HTMLElementTagNameMap { 'leapmotor-mate-card': LeapmotorCard }
 }

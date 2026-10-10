@@ -1,6 +1,6 @@
 {
-  "name": "Leapmotor Card",
+  "name": "Leapmotor Mate Card",
   "render_readme": true,
-  "filename": "leapmotor-card.js",
+  "filename": "leapmotor-mate-card.js",
   "homeassistant": "2026.8.0"
 }
