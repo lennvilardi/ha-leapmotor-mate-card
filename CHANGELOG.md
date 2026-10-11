@@ -5,6 +5,14 @@ Every notable change to this project is recorded here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project uses [Semantic Versioning](https://semver.org/).
 
+## [0.2.2] — 2026-10-11
+
+### Fixed
+
+- The "Since <day>" lifetime label now shows the year (`8 oct. 2026`): the
+  starting point outlives the year it names. The per-day rows keep their short
+  day format.
+
 ## [0.2.1] — 2026-10-11
 
 ### Added

@@ -1,6 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { formatCalendarDay, formatDayRange, formatNumber } from '../format'
+import { formatCalendarDate, formatCalendarDay, formatDayRange, formatNumber } from '../format'
 import { DASH, type TranslateFn } from '../localize'
 import { sharedStyles } from '../theme'
 import type {
@@ -110,7 +110,7 @@ export class LeapmotorTrip extends LitElement {
   /** "Since <day>" when the totals declare where they start, else "All time". */
   private lifetimeLabel(): string {
     const since = this.state.trip.lifetimeSince
-    const day = since !== undefined ? formatCalendarDay(since, this.language) : undefined
+    const day = since !== undefined ? formatCalendarDate(since, this.language) : undefined
     return day !== undefined ? this.t('trip.lifetime_since', { date: day }) : this.t('trip.lifetime')
   }
 

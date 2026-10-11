@@ -146,3 +146,11 @@ describe('Leapmotor Mate lifetime totals', () => {
     expect(s.trip.lifetimeSince).toBeUndefined()
   })
 })
+
+describe('formatCalendarDate', () => {
+  it('keeps the year (since label)', async () => {
+    const { formatCalendarDate } = await import('../src/format')
+    expect(formatCalendarDate('2026-10-08', 'en')).toContain('2026')
+    expect(formatCalendarDate('nope', 'en')).toBeUndefined()
+  })
+})

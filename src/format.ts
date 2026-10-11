@@ -81,6 +81,18 @@ export function formatCalendarDay(day: string, language: string): string | undef
   return calendarDayFormat(language).format(d)
 }
 
+/**
+ * A calendar day WITH its year — `8 oct. 2026` in French, `Oct 8, 2026` in
+ * English. For a starting point such as the lifetime totals' "since", which
+ * outlives the year it names; the per-day rows keep `formatCalendarDay`,
+ * whose days are always recent.
+ */
+export function formatCalendarDate(day: string, language: string): string | undefined {
+  const d = new Date(day)
+  if (Number.isNaN(d.getTime())) return undefined
+  return new Intl.DateTimeFormat(language, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(d)
+}
+
 export function formatUpdated(d: Date | undefined, now: Date, t: TranslateFn, language: string): string {
   if (!d) return DASH
   return t('updated', { time: `${formatTimeOfDay(d, language)} ${formatDayLabel(d, now, t, language)}` })
