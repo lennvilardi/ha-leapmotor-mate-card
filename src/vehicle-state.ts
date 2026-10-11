@@ -718,6 +718,13 @@ export function buildVehicleState(hass: HomeAssistant, map: EntityMap, now: Date
         if (energy === undefined || distance === undefined || distance <= 0) return undefined
         return (energy / distance) * 100
       })(),
+      lifetimeSince: (() => {
+        for (const key of ['totalEnergy', 'totalMileage'] as LogicalKey[]) {
+          const since = attr<unknown>(hass, map, key, 'since')
+          if (isCalendarDay(since)) return since
+        }
+        return undefined
+      })(),
     },
     comfort: {
       driverSeatHeat: num(hass, map, 'driverSeatHeat'),

@@ -5,9 +5,16 @@ Every notable change to this project is recorded here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project uses [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.2.1] — 2026-10-11
 
 ### Added
+
+- **Dated lifetime line.** When `totalEnergy` or `totalMileage` carries a
+  `since` attribute (a calendar day), the Trip group reads "Since <day>"
+  instead of "All time". Leapmotor Mate only knows the trips made since it was
+  installed (or since the car was delivered to its owner), so the totals are
+  now shown for what they are. `mate/leapmotor_stats.py` provides `since`,
+  `total_km` and `total_energy_kwh`.
 
 - `mate/leapmotor_stats.py` and a README section: Trip group statistics from
   Leapmotor Mate's CSV trip export (7-day distance/energy with per-day detail,

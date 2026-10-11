@@ -292,6 +292,13 @@ export interface VehicleState {
     totalEnergyKwh?: number
     lifetimeConsumption?: number
     /**
+     * The first day the lifetime totals count from, when the entity says so
+     * (`since` attribute, a calendar day). Leapmotor Mate only knows the trips
+     * made since it was installed; the label then reads "Since <day>" instead
+     * of claiming the car's whole life.
+     */
+    lifetimeSince?: string
+    /**
      * The weekly series of the `weekly_consumption` attribute, in the order
      * the API sends it: from the oldest week to the most recent. Empty when
      * there is no series at all that can be read.

@@ -127,3 +127,22 @@ describe('Leapmotor Mate comfort', () => {
     expect(resolveAction('mirrorHeat', s, map)).toEqual({ domain: 'switch', service: 'turn_on', entityId: 'switch.b10_mirror' })
   })
 })
+
+describe('Leapmotor Mate lifetime totals', () => {
+  it('reads the start day of the totals from the since attribute', () => {
+    const hass = mateHass({
+      'sensor.mate_total_energy': { state: '110.1', attributes: { since: '2026-10-08' } },
+      'sensor.mate_total_km': { state: '655', attributes: { since: '2026-10-08' } },
+    })
+    const map = { totalEnergy: 'sensor.mate_total_energy', totalMileage: 'sensor.mate_total_km', odometer: 'sensor.mate_odo' }
+    const s = buildVehicleState(hass, map, new Date('2026-10-11T10:00:00Z'))
+    expect(s.trip.lifetimeSince).toBe('2026-10-08')
+    expect(s.trip.lifetimeConsumption).toBeCloseTo(16.81, 1)
+  })
+
+  it('has no start day without the attribute', () => {
+    const hass = mateHass({ 'sensor.mate_total_energy': { state: '110.1' } })
+    const s = buildVehicleState(hass, { totalEnergy: 'sensor.mate_total_energy' }, new Date('2026-10-11T10:00:00Z'))
+    expect(s.trip.lifetimeSince).toBeUndefined()
+  })
+})

@@ -114,6 +114,7 @@
   "trip.recent_days": "Recent days",
   "trip.consumption": "6 week average",
   "trip.lifetime": "All time",
+  "trip.lifetime_since": "Since {date}",
   "trip.energy_driving": "Driving",
   "trip.energy_climate": "Climate",
   "trip.energy_other": "Other",

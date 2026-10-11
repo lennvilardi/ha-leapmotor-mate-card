@@ -1,6 +1,6 @@
 {
   "name": "leapmotor-mate-card",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Lovelace card for Leapmotor vehicles running Leapmotor Mate (MQTT), forked from fapgomes/ha-leapmotor-card",
   "license": "GPL-3.0-or-later",
   "repository": { "type": "git", "url": "git+https://github.com/lennvilardi/ha-leapmotor-mate-card.git" },

@@ -107,6 +107,13 @@ export class LeapmotorTrip extends LitElement {
    * without an odometer reading still has a genuine value to show, and
    * hiding it would mean losing information.
    */
+  /** "Since <day>" when the totals declare where they start, else "All time". */
+  private lifetimeLabel(): string {
+    const since = this.state.trip.lifetimeSince
+    const day = since !== undefined ? formatCalendarDay(since, this.language) : undefined
+    return day !== undefined ? this.t('trip.lifetime_since', { date: day }) : this.t('trip.lifetime')
+  }
+
   private lifetimeValue(): string {
     const { lifetimeConsumption, totalEnergyKwh } = this.state.trip
     const parts: string[] = []
@@ -377,7 +384,7 @@ export class LeapmotorTrip extends LitElement {
             label: this.t('trip.consumption'),
             value: trip.avgConsumption !== undefined ? `${formatNumber(trip.avgConsumption, 1)} kWh/100 km` : DASH,
           },
-          { label: this.t('trip.lifetime'), value: this.lifetimeValue() },
+          { label: this.lifetimeLabel(), value: this.lifetimeValue() },
         ],
       },
       {

@@ -137,10 +137,29 @@ entities:
   lastWeekOtherPercent: sensor.leapmotor_week_other
 ```
 
+For the lifetime line, add `total_km` and `total_energy_kwh` to
+`json_attributes` and two more template sensors carrying the start day:
+
+```yaml
+      - name: Leapmotor total distance
+        unique_id: leapmotor_total_distance
+        unit_of_measurement: km
+        state: "{{ state_attr('sensor.leapmotor_stats', 'total_km') }}"
+        attributes:
+          since: "{{ state_attr('sensor.leapmotor_stats', 'since') }}"
+      - name: Leapmotor total energy
+        unique_id: leapmotor_total_energy
+        unit_of_measurement: kWh
+        state: "{{ state_attr('sensor.leapmotor_stats', 'total_energy_kwh') }}"
+        attributes:
+          since: "{{ state_attr('sensor.leapmotor_stats', 'since') }}"
+```
+
+mapped as `totalMileage` and `totalEnergy`. Mate only knows the trips made since
+it was installed, so the card reads **"Since <day>"** rather than "All time".
+
 The per-day energy is the **driving** energy only (`ec_driving`), and a day gets
-none unless every trip of that day reports it. Do not map `totalEnergy` /
-`totalMileage` from this script: Mate only knows the trips made since it was
-installed, and the card would present them as the car's lifetime figures.
+none unless every trip of that day reports it.
 
 The full list of logical names is in the catalog below. The `leapmotor.*`
 services (climate settings, sunshade) have no Mate equivalent and are reported
