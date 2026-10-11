@@ -135,6 +135,14 @@ export const ENTITY_KEYS = {
   unlockButton: { domain: 'button', tk: 'mate_unlock' },
   climateOnButton: { domain: 'button', tk: 'mate_climate_on' },
   climateOffButton: { domain: 'button', tk: 'mate_climate_off' },
+  driverSeatHeatOnButton: { domain: 'button', tk: 'mate_driver_seat_heat_on' },
+  driverSeatHeatOffButton: { domain: 'button', tk: 'mate_driver_seat_heat_off' },
+  passengerSeatHeatOnButton: { domain: 'button', tk: 'mate_passenger_seat_heat_on' },
+  passengerSeatHeatOffButton: { domain: 'button', tk: 'mate_passenger_seat_heat_off' },
+  steeringWheelHeatOnButton: { domain: 'button', tk: 'mate_steering_heat_on' },
+  steeringWheelHeatOffButton: { domain: 'button', tk: 'mate_steering_heat_off' },
+  mirrorHeatOnButton: { domain: 'button', tk: 'mate_mirror_heat_on' },
+  mirrorHeatOffButton: { domain: 'button', tk: 'mate_mirror_heat_off' },
 } as const
 
 export type LogicalKey = keyof typeof ENTITY_KEYS

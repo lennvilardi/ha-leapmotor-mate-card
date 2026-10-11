@@ -38,6 +38,29 @@ entities:
   location: device_tracker.<car>
 ```
 
+### Vehicle picture
+
+Mate composes the official picture of *your* car (colour, cable plugged in,
+trunk open) and serves it on its internal port. Expose it as a template
+`image` entity and map it to `vehiclePicture` (with `image: auto`). The add-on
+hostname is its slug with dashes (Settings → Add-ons → Leapmotor Mate):
+
+```yaml
+template:
+  - image:
+      - name: Leapmotor photo
+        url: >
+          http://<addon-hostname>:4000/api/car-picture?v={{
+          states('binary_sensor.<car>_plug_connected') }}-{{
+          states('binary_sensor.<car>_charging') }}-{{
+          states('binary_sensor.<car>_trunk') }}
+        verify_ssl: false
+```
+
+The `v` parameter changes with the car's state, which makes Home Assistant
+fetch the picture again. Do not add `refresh=1`: it re-downloads the picture
+package from the Leapmotor cloud on every request.
+
 The full list of logical names is in the catalog below. The `leapmotor.*`
 services (climate settings, sunshade) have no Mate equivalent and are reported
 as unavailable.
@@ -416,7 +439,7 @@ entities:
   rangeLive: sensor.my_car_live_remaining_range_km
 ```
 
-The catalog below lists all 93 logical names the card knows about, the
+The catalog below lists all 101 logical names the card knows about, the
 Home Assistant domain each one expects, and the `translation_key` it is
 matched against. Every key is valid as an override target under
 `entities:`.
@@ -570,8 +593,11 @@ matched against. Every key is valid as an override target under
 Fork addition. Leapmotor Mate publishes the car over MQTT discovery, so its
 entities are not on the `leapmotor` platform: when no `leapmotor` entity
 exists and `entities:` is set, the card runs in standalone mode on the
-overrides alone. Mate exposes lock and climate as buttons; these names point
-the card at them. A `binary_sensor` with `device_class: lock` is accepted
+overrides alone. Mate exposes lock, climate and comfort as buttons; these names point
+the card at them. Comfort levels published as numeric sensors (0 = off) are
+read as on/off; a seat level above 0 presses the seat's "on" button, 0 its
+"off" button; a comfort key mapped straight to a button (battery preheat) is
+pressed. Seat ventilation has no Mate command and is display-only. A `binary_sensor` with `device_class: lock` is accepted
 for `lock` (HA convention: `on` = unlocked). The `leapmotor.*` services
 (climate settings, sunshade) do not exist in this mode and are reported as
 unavailable.
@@ -582,6 +608,14 @@ unavailable.
 | `unlockButton` | button | `mate_unlock` |
 | `climateOnButton` | button | `mate_climate_on` |
 | `climateOffButton` | button | `mate_climate_off` |
+| `driverSeatHeatOnButton` | button | `mate_driver_seat_heat_on` |
+| `driverSeatHeatOffButton` | button | `mate_driver_seat_heat_off` |
+| `passengerSeatHeatOnButton` | button | `mate_passenger_seat_heat_on` |
+| `passengerSeatHeatOffButton` | button | `mate_passenger_seat_heat_off` |
+| `steeringWheelHeatOnButton` | button | `mate_steering_heat_on` |
+| `steeringWheelHeatOffButton` | button | `mate_steering_heat_off` |
+| `mirrorHeatOnButton` | button | `mate_mirror_heat_on` |
+| `mirrorHeatOffButton` | button | `mate_mirror_heat_off` |
 
 ## Development
 

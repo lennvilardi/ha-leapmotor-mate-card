@@ -36,6 +36,17 @@ export function bool(hass: HomeAssistant, map: EntityMap, key: LogicalKey): bool
   return undefined
 }
 
+/**
+ * On/off from a switch-like state, or from a numeric level (Leapmotor Mate
+ * publishes heating as a level sensor: 0 = off, anything above = on).
+ */
+export function onOff(hass: HomeAssistant, map: EntityMap, key: LogicalKey): boolean | undefined {
+  const b = bool(hass, map, key)
+  if (b !== undefined) return b
+  const n = num(hass, map, key)
+  return n === undefined ? undefined : n > 0
+}
+
 export function unit(hass: HomeAssistant, map: EntityMap, key: LogicalKey): string | undefined {
   return entity(hass, map, key)?.attributes.unit_of_measurement
 }
@@ -713,10 +724,10 @@ export function buildVehicleState(hass: HomeAssistant, map: EntityMap, now: Date
       driverSeatVent: num(hass, map, 'driverSeatVent'),
       passengerSeatHeat: num(hass, map, 'passengerSeatHeat'),
       passengerSeatVent: num(hass, map, 'passengerSeatVent'),
-      steeringWheelHeat: bool(hass, map, 'steeringWheelHeat'),
+      steeringWheelHeat: onOff(hass, map, 'steeringWheelHeat'),
       steeringWheelHeatRemaining: num(hass, map, 'steeringWheelHeatRemaining'),
-      mirrorHeat: bool(hass, map, 'mirrorHeat'),
-      batteryPreheat: bool(hass, map, 'batteryPreheat'),
+      mirrorHeat: onOff(hass, map, 'mirrorHeat'),
+      batteryPreheat: onOff(hass, map, 'batteryPreheat'),
     },
     schedule: {
       // Consistent with `charging.phase === 'scheduled'`, which accepts

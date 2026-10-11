@@ -76,6 +76,7 @@ export class LeapmotorCardEditor extends LitElement {
           { value: '', label: t('editor.language_auto') },
           { value: 'pt', label: 'Português' },
           { value: 'en', label: 'English' },
+          { value: 'fr', label: 'Français' },
         ] } },
       },
       {

@@ -38,7 +38,7 @@ import './sections/trip'
 import './sections/comfort'
 import './sections/schedule'
 
-export const CARD_VERSION = '0.1.0'
+export const CARD_VERSION = '0.2.0'
 
 /**
  * Wait time before sending the temperature. `leapmotor.set_climate` is not
@@ -555,6 +555,20 @@ export class LeapmotorCard extends LitElement {
       const { key, value } = e.detail
       const entityId = map[key]
       if (!entityId || !this._hass) return
+      // Leapmotor Mate: a seat level is a sensor, commanded by an on/off pair
+      // of buttons (heating only; ventilation has no command). Any level above
+      // 0 presses "on", 0 presses "off". No pending request is recorded: Mate
+      // picks the level itself, so the reading may never equal the tapped one.
+      if (!entityId.startsWith('number.')) {
+        const button = map[`${key}${value > 0 ? 'On' : 'Off'}Button` as LogicalKey]
+        const call: ServiceCall | undefined = button ? { domain: 'button', service: 'press', entityId: button } : undefined
+        if (!call) {
+          this.notifyError(new Error(createTranslator(pickLanguage(this._config?.language, this._hass.locale?.language ?? this._hass.language))('error.service_unavailable')))
+          return
+        }
+        void this.doCall(call).catch(err => this.notifyError(err))
+        return
+      }
       // Recorded here and not in the section that emitted it: either of the
       // two (the climate panel, the comfort section) can disappear between
       // the request and the confirmation, and the request must not

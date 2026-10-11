@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { createTranslator, formatDuration, pickLanguage } from '../src/localize'
 import en from '../src/translations/en.json'
 import pt from '../src/translations/pt.json'
+import fr from '../src/translations/fr.json'
 
 describe('pickLanguage', () => {
   it('config wins over hass\'s language', () => {
@@ -88,6 +89,19 @@ describe('translation catalogs', () => {
    * because that's what `createTranslator` returns when neither the primary
    * catalog nor the fallback one has it.
    */
+  it('fr and en have exactly the same keys', () => {
+    const frKeys = new Set(flattenKeys(fr))
+    const enKeys = new Set(flattenKeys(en))
+    const missingInFr = [...enKeys].filter(key => !frKeys.has(key)).sort()
+    const extraInFr = [...frKeys].filter(key => !enKeys.has(key)).sort()
+    expect({ missingInFr, extraInFr }).toEqual({ missingInFr: [], extraInFr: [] })
+  })
+
+  it('picks French from the Home Assistant locale', () => {
+    expect(pickLanguage(undefined, 'fr-FR')).toBe('fr')
+    expect(createTranslator('fr')('action.lock')).toBe('Verrouiller')
+  })
+
   it('pt and en have exactly the same keys', () => {
     const ptKeys = new Set(flattenKeys(pt))
     const enKeys = new Set(flattenKeys(en))

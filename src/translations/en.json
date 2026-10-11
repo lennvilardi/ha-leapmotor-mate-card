@@ -133,7 +133,7 @@
   "schedule.weekly": "Repeats weekly",
   "schedule.cancelled_once": "Cancelled this time",
   "schedule.disabled": "Disabled",
-  "error.not_found": "No entities from the Leapmotor integration were found.",
+  "error.not_found": "No Leapmotor entities found. With Leapmotor Mate, set the \"entities\" option (see the README).",
   "error.unknown_device": "The device set in \"device\" does not exist. Available devices: {candidates}.",
   "error.ambiguous": "More than one Leapmotor vehicle found. Set which one in \"device\": {candidates}.",
   "error.sections_removed": "The 'sections' option no longer exists in this version of the card. Replace it with 'grid', which picks and orders the groups shown — see the README.",

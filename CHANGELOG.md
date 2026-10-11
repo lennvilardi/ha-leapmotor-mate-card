@@ -5,6 +5,25 @@ Every notable change to this project is recorded here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project uses [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] — 2026-10-11
+
+### Added
+
+- **Comfort with Leapmotor Mate.** Seat heating, steering wheel and mirror
+  heating are driven by Mate's on/off button pairs (8 new logical names, see
+  the README catalog); battery preheat by its single button. Levels published
+  as numeric sensors (0 = off) are read as on/off. Seat ventilation has no
+  Mate command and is display-only.
+- **French translation**, picked automatically from the Home Assistant
+  language or with `language: fr`.
+- **Vehicle picture with Mate**: the README shows how to expose the live,
+  owner-specific picture Mate composes (`/api/car-picture`) as an `image`
+  entity for `vehiclePicture`.
+
+### Changed
+
+- The "no entities" error now points Mate users at the `entities` option.
+
 ## [0.1.0] — 2026-10-10
 
 First release of **Leapmotor Mate Card**, a fork of

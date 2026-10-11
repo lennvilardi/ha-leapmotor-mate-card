@@ -90,3 +90,40 @@ describe('Leapmotor Mate (standalone mode)', () => {
     expect(resolveAction('lock', state, map)).toEqual({ domain: 'lock', service: 'lock', entityId: 'lock.b10_lock' })
   })
 })
+
+describe('Leapmotor Mate comfort', () => {
+  const COMFORT = {
+    steeringWheelHeat: 'sensor.mate_wheel',
+    steeringWheelHeatOnButton: 'button.mate_wheel_on',
+    steeringWheelHeatOffButton: 'button.mate_wheel_off',
+    mirrorHeat: 'sensor.mate_mirror',
+    mirrorHeatOnButton: 'button.mate_mirror_on',
+    mirrorHeatOffButton: 'button.mate_mirror_off',
+    batteryPreheat: 'button.mate_preheat',
+  }
+  const at = new Date('2026-10-10T10:00:00Z')
+
+  it('reads a numeric level sensor as on/off', () => {
+    const off = buildVehicleState(mateHass({ 'sensor.mate_wheel': { state: '0' }, 'sensor.mate_mirror': { state: '2' } }), COMFORT, at)
+    expect(off.comfort.steeringWheelHeat).toBe(false)
+    expect(off.comfort.mirrorHeat).toBe(true)
+  })
+
+  it('presses the on button when off, the off button when on', () => {
+    const off = buildVehicleState(mateHass({ 'sensor.mate_wheel': { state: '0' } }), COMFORT, at)
+    expect(resolveAction('steeringWheelHeat', off, COMFORT)?.entityId).toBe('button.mate_wheel_on')
+    const on = buildVehicleState(mateHass({ 'sensor.mate_mirror': { state: '1' } }), COMFORT, at)
+    expect(resolveAction('mirrorHeat', on, COMFORT)?.entityId).toBe('button.mate_mirror_off')
+  })
+
+  it('presses a single button mapped directly (battery preheat)', () => {
+    const s = buildVehicleState(mateHass({}), COMFORT, at)
+    expect(resolveAction('batteryPreheat', s, COMFORT)).toEqual({ domain: 'button', service: 'press', entityId: 'button.mate_preheat' })
+  })
+
+  it('keeps the switch behaviour for the integration', () => {
+    const map = { mirrorHeat: 'switch.b10_mirror' }
+    const s = buildVehicleState(mateHass({ 'switch.b10_mirror': { state: 'off' } }), map, at)
+    expect(resolveAction('mirrorHeat', s, map)).toEqual({ domain: 'switch', service: 'turn_on', entityId: 'switch.b10_mirror' })
+  })
+})

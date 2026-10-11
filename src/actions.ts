@@ -21,6 +21,22 @@ function press(map: EntityMap, key: LogicalKey): ServiceCall | undefined {
   return entityId ? { domain: 'button', service: 'press', entityId } : undefined
 }
 
+/**
+ * A comfort toggle. The integration exposes a switch; Leapmotor Mate exposes a
+ * level sensor plus an on/off pair of buttons (or a single button, for the
+ * battery preheat). Same rule as toggleSwitch: only a confirmed `true` turns
+ * it off, an unknown state turns it on.
+ */
+function comfortToggle(
+  map: EntityMap, key: LogicalKey, on: boolean | undefined, onButton?: LogicalKey, offButton?: LogicalKey,
+): ServiceCall | undefined {
+  const entityId = map[key]
+  if (entityId?.startsWith('switch.')) return toggleSwitch(map, key, on)
+  if (entityId?.startsWith('button.')) return press(map, key)
+  if (onButton && offButton) return press(map, on === true ? offButton : onButton)
+  return undefined
+}
+
 function toggleSwitch(map: EntityMap, key: LogicalKey, on: boolean | undefined): ServiceCall | undefined {
   const entityId = map[key]
   return entityId ? { domain: 'switch', service: on === true ? 'turn_off' : 'turn_on', entityId } : undefined
@@ -431,9 +447,12 @@ export function resolveAction(
       // only a confirmed `true` turns it off, an unknown state turns it on.
       return press(map, state.climate.on === true ? 'climateOffButton' : 'climateOnButton')
     }
-    case 'steeringWheelHeat': return toggleSwitch(map, 'steeringWheelHeat', state.comfort.steeringWheelHeat)
-    case 'mirrorHeat': return toggleSwitch(map, 'mirrorHeat', state.comfort.mirrorHeat)
-    case 'batteryPreheat': return toggleSwitch(map, 'batteryPreheat', state.comfort.batteryPreheat)
+    case 'steeringWheelHeat':
+      return comfortToggle(map, 'steeringWheelHeat', state.comfort.steeringWheelHeat, 'steeringWheelHeatOnButton', 'steeringWheelHeatOffButton')
+    case 'mirrorHeat':
+      return comfortToggle(map, 'mirrorHeat', state.comfort.mirrorHeat, 'mirrorHeatOnButton', 'mirrorHeatOffButton')
+    case 'batteryPreheat':
+      return comfortToggle(map, 'batteryPreheat', state.comfort.batteryPreheat)
     case 'setChargeLimit': {
       // Returns the call without `data` on purpose: the value comes from the
       // charging panel's slider, which `onLimit` passes as `extra` to
