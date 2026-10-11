@@ -5,6 +5,14 @@ Every notable change to this project is recorded here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `mate/leapmotor_stats.py` and a README section: Trip group statistics from
+  Leapmotor Mate's CSV trip export (7-day distance/energy with per-day detail,
+  6-week consumption with weekly history, driving/climate/other split).
+
 ## [0.2.0] — 2026-10-11
 
 ### Added

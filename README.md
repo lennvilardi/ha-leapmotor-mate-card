@@ -61,6 +61,87 @@ The `v` parameter changes with the car's state, which makes Home Assistant
 fetch the picture again. Do not add `refresh=1`: it re-downloads the picture
 package from the Leapmotor cloud on every request.
 
+### Trip statistics
+
+Mate publishes no trip statistics over MQTT, but it exports its trips as CSV.
+[`mate/leapmotor_stats.py`](mate/leapmotor_stats.py) (standard library only)
+turns that export into what the **Trip** group expects: distance and energy of
+the last 7 days with a per-day breakdown, the 6-week average consumption with
+its weekly history, and the driving / climate / other split of the week.
+
+Copy it to `/config/leapmotor_stats.py`, then:
+
+```yaml
+# configuration.yaml
+command_line:
+  - sensor:
+      name: leapmotor_stats
+      unique_id: leapmotor_stats
+      command: python3 /config/leapmotor_stats.py http://<addon-hostname>:4000 Europe/Paris
+      command_timeout: 30
+      scan_interval: 900
+      value_template: "{{ value_json.last7_km }}"
+      unit_of_measurement: km
+      json_attributes: [last7_energy_kwh, avg_6w_kwh_100km, week_driving_kwh,
+        week_climate_kwh, week_other_kwh, week_driving_pct, week_climate_pct,
+        week_other_pct, daily_detail, weekly_consumption, trips, since, updated]
+
+template:
+  - sensor:
+      - name: Leapmotor 7 days distance
+        unique_id: leapmotor_7d_distance
+        unit_of_measurement: km
+        state: "{{ states('sensor.leapmotor_stats') }}"
+        attributes:
+          daily_detail: "{{ state_attr('sensor.leapmotor_stats', 'daily_detail') }}"
+          energy_scope: driving_only
+          energy_scope_confirmed: "{{ true }}"
+          energy_unit: kWh
+      - name: Leapmotor 7 days energy
+        unique_id: leapmotor_7d_energy
+        unit_of_measurement: kWh
+        state: "{{ state_attr('sensor.leapmotor_stats', 'last7_energy_kwh') }}"
+      - name: Leapmotor 6 weeks consumption
+        unique_id: leapmotor_6w_consumption
+        unit_of_measurement: kWh/100km
+        state: "{{ state_attr('sensor.leapmotor_stats', 'avg_6w_kwh_100km') }}"
+        attributes:
+          weekly_consumption: "{{ state_attr('sensor.leapmotor_stats', 'weekly_consumption') }}"
+      - name: Leapmotor week driving
+        unique_id: leapmotor_week_driving
+        unit_of_measurement: "%"
+        state: "{{ state_attr('sensor.leapmotor_stats', 'week_driving_pct') }}"
+        attributes:
+          driving_energy_kwh: "{{ state_attr('sensor.leapmotor_stats', 'week_driving_kwh') }}"
+          climate_energy_kwh: "{{ state_attr('sensor.leapmotor_stats', 'week_climate_kwh') }}"
+          other_energy_kwh: "{{ state_attr('sensor.leapmotor_stats', 'week_other_kwh') }}"
+      - name: Leapmotor week climate
+        unique_id: leapmotor_week_climate
+        unit_of_measurement: "%"
+        state: "{{ state_attr('sensor.leapmotor_stats', 'week_climate_pct') }}"
+      - name: Leapmotor week other
+        unique_id: leapmotor_week_other
+        unit_of_measurement: "%"
+        state: "{{ state_attr('sensor.leapmotor_stats', 'week_other_pct') }}"
+```
+
+and map them in the card:
+
+```yaml
+entities:
+  last7DaysKm: sensor.leapmotor_7_days_distance
+  last7DaysEnergy: sensor.leapmotor_7_days_energy
+  avgConsumption6w: sensor.leapmotor_6_weeks_consumption
+  lastWeekDrivingPercent: sensor.leapmotor_week_driving
+  lastWeekClimatePercent: sensor.leapmotor_week_climate
+  lastWeekOtherPercent: sensor.leapmotor_week_other
+```
+
+The per-day energy is the **driving** energy only (`ec_driving`), and a day gets
+none unless every trip of that day reports it. Do not map `totalEnergy` /
+`totalMileage` from this script: Mate only knows the trips made since it was
+installed, and the card would present them as the car's lifetime figures.
+
 The full list of logical names is in the catalog below. The `leapmotor.*`
 services (climate settings, sunshade) have no Mate equivalent and are reported
 as unavailable.
